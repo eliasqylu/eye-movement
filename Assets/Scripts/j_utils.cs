@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using System.IO;
 
-namespace  james_utils {
+namespace j_utils {
 
     public static class myUnityFunctions{
         public static string GetGameObjectPath(GameObject obj)
