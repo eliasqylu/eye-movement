@@ -28,6 +28,9 @@
 *.opendb
 *.VC.db
 
+# ---- Editor / build logs ----
+*.log
+
 # ---- OS ----
 .DS_Store
 .DS_Store?
