@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/refine_vs_nod.unity
+    guid: 86cac59e8921e0144b0ff9be4893610d
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 065e936c984a40e44b8ecb3b30990fd2, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 4b593396c761e2e4981ca76d69d41a42, type: 2}
