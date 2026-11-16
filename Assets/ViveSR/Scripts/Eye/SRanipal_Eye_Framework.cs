@@ -46,7 +46,15 @@ namespace ViveSR {
                 }
 
                 void Start () {
-                    StartFramework ();
+                    // Graceful degradation on platforms without the native
+                    // SRanipal runtime (e.g. Quest 3 / PICO using our own eye
+                    // provider): mark not-supported instead of throwing.
+                    try {
+                        StartFramework ();
+                    } catch (System.DllNotFoundException) {
+                        Status = FrameworkStatus.NOT_SUPPORT;
+                        Debug.Log ("[SRanipal] Native runtime unavailable; eye data is supplied by the active provider.");
+                    }
                 }
 
                 void OnDestroy () {

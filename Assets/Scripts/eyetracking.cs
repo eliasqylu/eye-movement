@@ -88,10 +88,14 @@ public class eyetracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        readVerboseDataSuccess = SRanipal_Eye_v2.GetVerboseData(out eyeData);
+        // --- Data acquisition from the hardware-agnostic provider ---
+        IEyeTrackerProvider provider = EyeTrackingBootstrap.Active;
+        readVerboseDataSuccess = provider.IsTracking;
 
-        isLeftEyeGazeRayValid = SRanipal_Eye_v2.GetGazeRay((GazeIndex)0, out leftEyeLocalOrigin, out leftEyeLocalForward);
-        isRightEyeGazeRayValid = SRanipal_Eye_v2.GetGazeRay((GazeIndex)1, out rightEyeLocalOrigin, out rightEyeLocalForward);
+        isLeftEyeGazeRayValid = provider.TryGetGazeRay(EyeSide.Left, out leftEyeLocalOrigin, out leftEyeLocalForward);
+        isRightEyeGazeRayValid = provider.TryGetGazeRay(EyeSide.Right, out rightEyeLocalOrigin, out rightEyeLocalForward);
+
+        eyeData = BuildVerboseData(provider);
 
         if (isLeftEyeGazeRayValid == false && isRightEyeGazeRayValid == false)
         {
@@ -243,6 +247,28 @@ public class eyetracking : MonoBehaviour
 
 
 
+    }
+
+    private static VerboseData BuildVerboseData(IEyeTrackerProvider provider)
+    {
+        var data = new VerboseData();
+        data.left = BuildSingleEye(provider, EyeSide.Left);
+        data.right = BuildSingleEye(provider, EyeSide.Right);
+        return data;
+    }
+
+    private static SingleEyeData BuildSingleEye(IEyeTrackerProvider provider, EyeSide side)
+    {
+        provider.TryGetGazeRay(side, out Vector3 origin, out Vector3 direction);
+        return new SingleEyeData
+        {
+            eye_data_validata_bit_mask = ulong.MaxValue,
+            gaze_origin_mm = origin * 1000f, // provider uses metres, SRanipal uses mm
+            gaze_direction_normalized = direction,
+            pupil_diameter_mm = 3f,
+            eye_openness = provider.GetEyeOpenness(side),
+            pupil_position_in_sensor_area = Vector2.zero
+        };
     }
 
     Vector3 CalculateCentroid(List<Vector3> positions)
