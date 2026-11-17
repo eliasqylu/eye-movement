@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 using j_utils; // Assuming this contains eyeHead_utils and other dependencies
 
 public class Fitts_wink : MonoBehaviour
@@ -111,10 +112,23 @@ public class Fitts_wink : MonoBehaviour
 
     private void HandleIdleState()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Keyboard (editor) or either controller trigger (on-device) starts the experiment.
+        if (Input.GetKeyDown(KeyCode.Space) || AnyTriggerPressed())
         {
             StartExperiment();
         }
+    }
+
+    private static bool AnyTriggerPressed()
+    {
+        var devices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, devices);
+        foreach (var device in devices)
+        {
+            if (device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed) && pressed)
+                return true;
+        }
+        return false;
     }
 
     private void HandleRunningState()
