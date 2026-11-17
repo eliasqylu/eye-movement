@@ -17,7 +17,7 @@ public static class BuildQuest
 {
     const string PerTargetPath = "Assets/XR/XRGeneralSettingsPerBuildTarget.asset";
     const string LoaderPath = "Assets/XR/Loaders/OpenXRLoader.asset";
-    const string FittsScenePath = "Assets/Scenes/experiments/Fitts.unity";
+    const string FittsScenePath = "Assets/Scenes/experiments/Drag.unity";
     const string PackageId = "com.elias.winker";
 
     public static void Configure()
@@ -88,7 +88,7 @@ public static class BuildQuest
 
         string outDir = "/Users/hilith/Documents/in-progress/reproduce/Builds";
         Directory.CreateDirectory(outDir);
-        string apkPath = Path.Combine(outDir, "WinkerQuest.apk");
+        string apkPath = Path.Combine(outDir, "WinkerDrag.apk");
 
         var options = new BuildPlayerOptions
         {

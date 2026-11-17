@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/experiments/Fitts.unity
-    guid: e0777f50cc046c84d82a81265473d17d
+    path: Assets/Scenes/experiments/Drag.unity
+    guid: 94e817fbe59d3474698946403a85e74b
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 065e936c984a40e44b8ecb3b30990fd2, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 4b593396c761e2e4981ca76d69d41a42, type: 2}

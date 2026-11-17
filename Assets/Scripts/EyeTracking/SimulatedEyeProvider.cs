@@ -46,7 +46,25 @@ public class SimulatedEyeProvider : IEyeTrackerProvider
         _rightClosed = rightButton;
         _leftValid = true;
         _rightValid = true;
+
+        // Temporary diagnostic: log on each closure state change.
+        if (leftButton != _dbgLeft) { _dbgLeft = leftButton; Debug.Log($"[SimEye] LEFT closure = {leftButton}"); }
+        if (rightButton != _dbgRight) { _dbgRight = rightButton; Debug.Log($"[SimEye] RIGHT closure = {rightButton}"); }
+
+        // One-time list of connected input devices.
+        if (!_devicesListed)
+        {
+            _devicesListed = true;
+            var all = new List<InputDevice>();
+            InputDevices.GetDevices(all);
+            Debug.Log($"[SimEye] devices found = {all.Count}");
+            foreach (var d in all)
+                Debug.Log($"[SimEye] device: '{d.name}' characteristics={d.characteristics}");
+        }
     }
+    private bool _dbgLeft;
+    private bool _dbgRight;
+    private bool _devicesListed;
 
     public bool TryGetGazeRay(EyeSide side, out Vector3 origin, out Vector3 direction)
     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 using j_utils; // Assuming this contains eyeHead_utils and other dependencies
 
 public class drag_wink : MonoBehaviour
@@ -129,10 +130,22 @@ public class drag_wink : MonoBehaviour
 
     private void HandleIdleState()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || AnyTriggerPressed())
         {
             StartExperiment();
         }
+    }
+
+    private static bool AnyTriggerPressed()
+    {
+        var devices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, devices);
+        foreach (var device in devices)
+        {
+            if (device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed) && pressed)
+                return true;
+        }
+        return false;
     }
 
     // MODIFIED: This entire method was restructured.
