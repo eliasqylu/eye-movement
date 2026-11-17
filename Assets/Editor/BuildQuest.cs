@@ -5,6 +5,9 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.XR.Management;
 using UnityEditor.XR.Management;
+using UnityEngine.XR.OpenXR;
+using UnityEngine.XR.OpenXR.Features.MetaQuestSupport;
+using UnityEngine.XR.OpenXR.Features.Interactions;
 
 /// <summary>
 /// One-click Android/Quest build for the simulated Winker.
@@ -46,6 +49,25 @@ public static class BuildQuest
         manager.loaders = new List<XRLoader> { loader };
 #pragma warning restore 0618
         EditorUtility.SetDirty(manager);
+        AssetDatabase.SaveAssets();
+
+        // --- Enable Meta Quest Support: loads Meta runtime directly (XR_OCULUS_android_initialize_loader)
+        // and adds the Oculus VR manifest category so the app enters immersive mode.
+        var openXRSettings = OpenXRSettings.GetSettingsForBuildTargetGroup(BuildTargetGroup.Android);
+        var questFeature = openXRSettings.GetFeature<MetaQuestFeature>();
+        if (questFeature == null)
+            throw new System.Exception("MetaQuestFeature not found in Android OpenXR settings");
+        if (!questFeature.enabled)
+            questFeature.enabled = true;
+
+        // Interaction profile (required by OpenXR validation for Quest).
+        var touchProfile = openXRSettings.GetFeature<OculusTouchControllerProfile>();
+        if (touchProfile == null)
+            throw new System.Exception("OculusTouchControllerProfile not found in Android OpenXR settings");
+        if (!touchProfile.enabled)
+            touchProfile.enabled = true;
+
+        EditorUtility.SetDirty(openXRSettings);
         AssetDatabase.SaveAssets();
 
         // --- Build scenes ---

@@ -430,18 +430,21 @@ namespace j_utils {
 
         public static float Compute5ptVelocity(List<float> xs)
         {
+            if (xs == null || xs.Count < 5) return 0f;
             int endInd = xs.Count-1;
             return (-xs[endInd] + 8 * xs[endInd-1] - 8 * xs[endInd-3] + xs[endInd-4]) / (12 * Time.deltaTime);
         }
 
         public static float Compute5ptAcceleration(List<float> xs)
         {
+            if (xs == null || xs.Count < 5) return 0f;
             int endInd = xs.Count-1;
             return (-xs[endInd] + 16 * xs[endInd-1] - 30*xs[endInd-2] + 16 * xs[endInd-3] - xs[endInd-4]) / (12 * Time.deltaTime * Time.deltaTime);
         }
 
         public static float Compute5ptJolt(List<float> xs)
         {
+            if (xs == null || xs.Count < 5) return 0f;
             int endInd = xs.Count-1;
             return (xs[endInd] -2 * xs[endInd-1] + 2* xs[endInd-3] - xs[endInd-4]) / (2 * Time.deltaTime * Time.deltaTime * Time.deltaTime);
         }
