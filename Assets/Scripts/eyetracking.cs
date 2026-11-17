@@ -5,9 +5,6 @@ using System.Linq;
 using UnityEngine;
 using ViveSR.anipal.Eye;
 using j_utils;
-using UnityEditor.PackageManager;
-using UnityEditor;
-using TreeEditor;
 using Unity.VisualScripting;
 
 public class eyetracking : MonoBehaviour
